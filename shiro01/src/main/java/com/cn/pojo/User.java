@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 
 @Entity
-@Table(name="user")
+@Table(name="user",catalog="myshiro")
 public class User {
 	private Integer id;
 	@NotEmpty(message="用户名不能为空")

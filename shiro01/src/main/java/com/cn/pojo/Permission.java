@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="permission")
+@Table(name="permission",catalog="myshiro")
 public class Permission {
 	private Integer id;
 	private String permissionname;

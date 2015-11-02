@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 
 
 @Entity
-@Table(name="role")
+@Table(name="role",catalog="myshiro")
 public class Role {
 	private Integer id;
 	private String rolename;
