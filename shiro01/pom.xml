@@ -1,0 +1,124 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.liqihua.shiro01</groupId>
+  <artifactId>shiro01</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>shiro01 Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  
+  <dependencies>
+  
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+ 	<groupId>javax.servlet</groupId>
+ 	<artifactId>servlet-api</artifactId>
+	<version>2.5</version>
+ 	<scope>provided</scope>
+ 	</dependency>  
+    <!-- SpringMVC核心jar -->  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-webmvc</artifactId>  
+        <version>3.2.4.RELEASE</version>  
+    </dependency>  
+    <!-- springmvc连接数据库需要的jar -->  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-jdbc</artifactId>  
+        <version>3.2.4.RELEASE</version>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.springframework</groupId>  
+        <artifactId>spring-orm</artifactId>  
+        <version>3.2.4.RELEASE</version>  
+    </dependency>  
+    <!-- ************************************ -->  
+    <!-- Hibernate相关jar -->  
+    <dependency>  
+        <groupId>org.hibernate</groupId>  
+        <artifactId>hibernate-core</artifactId>  
+        <version>4.2.5.Final</version>  
+    </dependency>  
+    <dependency>  
+        <groupId>org.hibernate</groupId>  
+        <artifactId>hibernate-ehcache</artifactId>  
+        <version>4.2.5.Final</version>  
+    </dependency>  
+    <dependency>  
+        <groupId>net.sf.ehcache</groupId>  
+        <artifactId>ehcache</artifactId>  
+        <version>2.7.2</version>  
+    </dependency>  
+    <dependency>  
+        <groupId>commons-dbcp</groupId>  
+        <artifactId>commons-dbcp</artifactId>  
+        <version>1.4</version>  
+    </dependency>  
+    <dependency>  
+        <groupId>mysql</groupId>  
+        <artifactId>mysql-connector-java</artifactId>  
+        <version>5.1.26</version>  
+    </dependency>  
+    <!-- javax提供的annotation -->  
+    <dependency>  
+        <groupId>javax.inject</groupId>  
+        <artifactId>javax.inject</artifactId>  
+        <version>1</version>  
+    </dependency>          
+    <!-- **************************** -->  
+      
+    <!-- hibernate验证 -->  
+    <dependency>  
+        <groupId>org.hibernate</groupId>  
+        <artifactId>hibernate-validator</artifactId>  
+        <version>5.0.1.Final</version>  
+    </dependency>  
+    <!-- 用于对@ResponseBody注解的支持 -->  
+    <dependency>  
+        <groupId>org.codehaus.jackson</groupId>  
+        <artifactId>jackson-mapper-asl</artifactId>  
+        <version>1.9.13</version>  
+    </dependency>          
+    <!-- 提供对c标签的支持 -->  
+    <dependency>  
+        <groupId>javax.servlet</groupId>  
+        <artifactId>jstl</artifactId>  
+        <version>1.2</version>  
+    </dependency>  
+    <!-- servlet api -->  
+    <dependency>  
+      <groupId>javax.servlet</groupId>  
+      <artifactId>servlet-api</artifactId>  
+      <version>2.5</version>  
+    </dependency>  
+      
+    <!--Apache Shiro所需的jar包-->    
+    <dependency>    
+      <groupId>org.apache.shiro</groupId>    
+      <artifactId>shiro-core</artifactId>    
+      <version>1.2.2</version>    
+    </dependency>    
+    <dependency>    
+      <groupId>org.apache.shiro</groupId>    
+      <artifactId>shiro-web</artifactId>    
+      <version>1.2.2</version>    
+    </dependency>    
+    <dependency>    
+      <groupId>org.apache.shiro</groupId>    
+      <artifactId>shiro-spring</artifactId>    
+      <version>1.2.2</version>    
+    </dependency> 
+    
+  </dependencies>
+  
+  <build>
+    <finalName>shiro01</finalName>
+  </build>
+</project>
