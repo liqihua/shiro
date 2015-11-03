@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+     
+	<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath*:config/config.properties</value>
+            </list>
+        </property>
+    </bean>
+     
+     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+   		<property name="driverClass" value="${jdbc.driver}"/>  
+    	<property name="jdbcUrl" value="${jdbc.url}"/> 
+    	<property name="user" value="${jdbc.username}"/>  
+     	<property name="password" value="${jdbc.password}"/> 
+     	<property name="testConnectionOnCheckout" value="true" /> 
+	</bean>
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="properties" ref="configProperties" />
+    </bean>   
+    
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource" />  
+        <!-- 扫描指定目录结构下所有标注@Entity实体 -->  
+        <property name="packagesToScan">  
+            <list>  
+              <!-- 实体 -->
+              <value>com.cn.pojo</value>  
+            </list>  
+        </property>  
+        <property name="hibernateProperties">  
+            <props>  
+                <!-- 设置Hibernate方言 -->  
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>  
+                <!-- 是否打印sql -->  
+                <prop key="hibernate.show_sql">true</prop>
+            </props>  
+        </property>  
+    </bean> 
+  
+  
+  <!-- 1.配置事务管理器 -->
+  <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory"></property>
+  </bean>
+  <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" /> 
+  
+  <bean name="userDao" class="com.cn.dao.UserDao" scope="prototype">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+     
+</beans>

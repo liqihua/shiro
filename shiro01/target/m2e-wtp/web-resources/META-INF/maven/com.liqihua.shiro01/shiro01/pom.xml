@@ -16,12 +16,12 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
+    <!-- <dependency>
  	<groupId>javax.servlet</groupId>
  	<artifactId>servlet-api</artifactId>
 	<version>2.5</version>
  	<scope>provided</scope>
- 	</dependency>  
+ 	</dependency>  --> 
     <!-- SpringMVC核心jar -->  
     <dependency>  
         <groupId>org.springframework</groupId>  
@@ -93,11 +93,11 @@
         <version>1.2</version>  
     </dependency>  
     <!-- servlet api -->  
-    <dependency>  
+    <!-- <dependency>  
       <groupId>javax.servlet</groupId>  
       <artifactId>servlet-api</artifactId>  
       <version>2.5</version>  
-    </dependency>  
+    </dependency>  --> 
       
     <!--Apache Shiro所需的jar包-->    
     <dependency>    

@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -17,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cn.pojo.Role;
 import com.cn.pojo.User;
 
-@Service
+@Service("myShiro")
 @Transactional
 public class MyShiro extends AuthorizingRealm{
 	@Inject  
@@ -53,8 +55,15 @@ public class MyShiro extends AuthorizingRealm{
      */  
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(
-			AuthenticationToken arg0) throws AuthenticationException {
-		
+			AuthenticationToken authenticationToken) throws AuthenticationException {
+		//UsernamePasswordToken对象用来存放提交的登录信息  
+        UsernamePasswordToken token=(UsernamePasswordToken) authenticationToken;  
+        //查出是否有此用户  
+        User user=userService.findByName(token.getUsername());  
+        if(user!=null){  
+            //若存在，将此用户存放到登录认证info中  
+            return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), getName());  
+        }  
 		
 		return null;
 	}
