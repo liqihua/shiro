@@ -1,6 +1,8 @@
 package com.cn.pojo;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -56,6 +59,16 @@ public class User {
 		this.roleList = roleList;
 	}
 	
+	
+	@Transient  
+    public Set<String> getRolesName(){  
+        List<Role> roles=getRoleList();  
+        Set<String> set=new HashSet<String>();  
+        for (Role role : roles) {  
+            set.add(role.getRolename());  
+        }  
+        return set;  
+    }  
 	
 	
 }

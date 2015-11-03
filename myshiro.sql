@@ -13,6 +13,9 @@ File Encoding         : 65001
 Date: 2015-11-02 18:43:05
 */
 
+create database myshiro;
+use myshiro;
+
 SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `permission`
