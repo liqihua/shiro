@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+	
+	<!-- 添加注解驱动 -->    
+    <context:annotation-config/> 
+    <!-- Spring MVC 必须的配置 -->  
+    <mvc:annotation-driven /> 
+	<!-- 使用组件扫描，将action扫描出来在spring容器中进行注册 -->
+	<context:component-scan base-package="com.liqihua.shiro.controller"/>
+	<context:component-scan base-package="com.liqihua.shiro.service"/>
+	<context:component-scan base-package="com.liqihua.shiro.dao"/>
+	<!-- 映射器，根据Handler的name查找Handler -->
+	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+	<!-- 表示所有实现了Controller接口的的Bean可以作为处理器 -->
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
+	
+	
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<!-- 配置C3P0连接池 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 扫描指定目录结构下所有标注@Entity实体 -->  
+        <property name="packagesToScan">  
+            <list>  
+              <!-- 实体 -->
+              <value>com.liqihua.shiro.bean</value>  
+            </list>  
+        </property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.connection.autocommit">false</prop>
+				<prop key="hibernate.hbm2dd1.auto">update</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<!-- 开启事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	
+	
+	
+	
+	<!-- 配置权限管理器 -->  
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">    
+        <!-- ref对应我们写的realm  MyShiro -->  
+        <property name="realm" ref="myShiro"/>    
+        <!-- 使用下面配置的缓存管理器 -->  
+        <property name="cacheManager" ref="cacheManager"/>    
+    </bean>  
+    
+    <!-- 配置shiro的过滤器工厂类，id- shiroFilter要和我们在web.xml中配置的过滤器一致 -->  
+    <bean id="shiroFilter" name="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">   
+        <!-- 调用我们配置的权限管理器 -->   
+        <property name="securityManager" ref="securityManager"/>   
+        <!-- 配置我们的登录请求地址 -->   
+        <property name="loginUrl" value="/login.jsp"/>    
+        <!-- 配置我们在登录页登录成功后的跳转地址，如果你访问的是非/login地址，则跳到您访问的地址 -->  
+        <property name="successUrl" value="/user.jsp"/>    
+        <!-- 如果您请求的资源不再您的权限范围，则跳转到/403请求地址 -->  
+        <property name="unauthorizedUrl" value="/403.jsp"/>    
+        <!-- 权限配置 -->  
+        <property name="filterChainDefinitions">    
+            <value>    
+                <!-- anon表示此地址不需要任何权限即可访问 -->  
+                /static/**=anon  
+                <!-- perms[user:query]表示访问此连接需要权限为user:query的用户 -->  
+                /user=perms[user:query]  
+                <!-- roles[manager]表示访问此连接需要用户的角色为manager -->  
+                /user/add=roles[manager]  
+                /user/del/**=roles[admin]  
+                /user/edit/**=roles[manager]  
+                <!--所有的请求(除去配置的静态资源请求或请求地址为anon的请求)都要通过登录验证,如果未登录则跳到/login-->    
+                /** = authc  
+            </value>    
+        </property>    
+    </bean>
+	
+	<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />    
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" /> 
+	
+</beans>

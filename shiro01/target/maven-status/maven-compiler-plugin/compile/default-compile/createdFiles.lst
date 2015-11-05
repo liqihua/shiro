@@ -1,7 +1,0 @@
-com\cn\pojo\Permission.class
-com\cn\service\MyShiro.class
-com\cn\pojo\User.class
-com\cn\pojo\Role.class
-com\cn\controller\HomeController.class
-com\cn\service\UserService.class
-com\cn\dao\UserDao.class
