@@ -16,6 +16,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.liqihua.shiro.bean.Permission;
 import com.liqihua.shiro.bean.Role;
 import com.liqihua.shiro.bean.User;
 
@@ -41,11 +42,14 @@ public class MyShiro extends AuthorizingRealm{
             info.setRoles(user.getRolesName());  
             //用户的角色对应的所有权限，如果只使用角色定义访问权限，下面的四行可以不要  
             List<Role> roleList=user.getRoleList();  
-            for (Role role : roleList) {  
-                info.addStringPermissions(role.getPermissionsName());  
-            }  
+            for (Role role : roleList) {
+            	List<Permission> pList = userService.findPermissionByRid(role.getId());
+            	for(Permission p : pList){
+            		info.addStringPermission(p.getPermissionname());  
+                }
+            }
             return info;  
-        }  
+        }
 		
 		return null;
 	}

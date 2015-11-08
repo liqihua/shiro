@@ -8,7 +8,5 @@
     
   <body>  
     <h1>对不起，您没有权限请求此连接！</h1>  
-    <img alt="" src="/static/img/1.jpg">  
-      
-  </body>  
+  </body>
 </html>

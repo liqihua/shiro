@@ -3,6 +3,7 @@ package com.liqihua.shiro.controller;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
@@ -32,32 +33,32 @@ public class HomeController {
 		for(User u : list){
 			System.out.println("----- : "+u.toString());
 		}
-		return null;
+		return "forward:/index.jsp";
 	}
 	
 	@RequestMapping(value="/login",method=RequestMethod.GET)  
-    public String loginForm(Model m){
-		System.out.println("--123");
-		m.addAttribute("user", new User());
+    public String loginForm(HttpServletRequest request){
+		System.out.println("---123");
         return "/login.jsp";  
     }
 	
 	@RequestMapping(value="/login",method=RequestMethod.POST)  
-    public String login(@Valid User user,BindingResult bindingResult,RedirectAttributes redirectAttributes){  
+    public String login(HttpServletRequest request,RedirectAttributes redirectAttributes){  
         try {  
-            if(bindingResult.hasErrors()){  
-                return "/login.jsp";  
-            }  
+        	String username = request.getParameter("username");
+        	String password = request.getParameter("password");
+        	System.out.println("username : "+username+" , password : "+password);
             //使用权限工具进行用户登录，登录成功后跳到shiro配置的successUrl中，与下面的return没什么关系！  
-            SecurityUtils.getSubject().login(new UsernamePasswordToken(user.getUsername(), user.getPassword()));  
+            SecurityUtils.getSubject().login(new UsernamePasswordToken(request.getParameter("username"), request.getParameter("password")));  
             return "redirect:/user.jsp";  
-        } catch (AuthenticationException e) {  
+        } catch (AuthenticationException e) {
+        	request.setAttribute("message", "用户名或密码错误");
             redirectAttributes.addFlashAttribute("message","用户名或密码错误");  
-            return "redirect:/login.jsp";  
+            return "forward:/login.jsp";  
         }  
     }
 	
-	@RequestMapping(value="/logout",method=RequestMethod.GET)    
+	/*@RequestMapping(value="/logout",method=RequestMethod.GET)    
     public String logout(RedirectAttributes redirectAttributes ){   
         //使用权限管理工具进行用户的退出，跳出登录，给出提示信息  
         SecurityUtils.getSubject().logout();    
@@ -68,7 +69,7 @@ public class HomeController {
 	@RequestMapping("/403")  
     public String unauthorizedRole(){  
         return "/403.jsp";  
-    } 
+    } */
 	
 	
 }

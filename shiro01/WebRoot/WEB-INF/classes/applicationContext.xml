@@ -68,6 +68,7 @@
 	<!-- 开启事务管理 -->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
+	<mvc:resources location="/images/" mapping="/images/**"/>
 	
 	
 	
@@ -92,17 +93,28 @@
         <property name="unauthorizedUrl" value="/403.jsp"/>    
         <!-- 权限配置 -->  
         <property name="filterChainDefinitions">    
-            <value>    
-                <!-- anon表示此地址不需要任何权限即可访问 -->  
-                /static/**=anon  
-                <!-- perms[user:query]表示访问此连接需要权限为user:query的用户 -->  
-                /user=perms[user:query]  
+            <value>
+            	<!-- anon表示此地址不需要任何权限即可访问 -->
+                /images/**=anon 
+            	/HomeController/login**=anon
+            	/HomeController/userList**=roles[admin]
+            	/HomeController/user.jsp=roles[admin]
+            	<!-- perms[add]表示访问此连接需要权限为add的用户 -->  
+                /add/**=perms[add]
+                <!-- perms[del]表示访问此连接需要权限为del的用户 -->  
+                /del/**=perms[del]
+                <!-- perms[update]表示访问此连接需要权限为update的用户 -->  
+                /update/**=perms[update]
+                <!-- perms[query]表示访问此连接需要权限为query的用户 -->  
+                /query/**=perms[query]
+                
+                 
                 <!-- roles[manager]表示访问此连接需要用户的角色为manager -->  
-                /user/add=roles[manager]  
+                <!-- /user/add=roles[manager]  
                 /user/del/**=roles[admin]  
-                /user/edit/**=roles[manager]  
+                /user/edit/**=roles[manager]  --> 
                 <!--所有的请求(除去配置的静态资源请求或请求地址为anon的请求)都要通过登录验证,如果未登录则跳到/login-->    
-                /** = authc  
+                /** = authc
             </value>    
         </property>    
     </bean>
