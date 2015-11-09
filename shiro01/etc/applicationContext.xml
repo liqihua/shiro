@@ -79,7 +79,17 @@
         <property name="realm" ref="myShiro"/>    
         <!-- 使用下面配置的缓存管理器 -->  
         <property name="cacheManager" ref="cacheManager"/>    
-    </bean>  
+    </bean>
+    
+    <bean id="chainDefinitionSectionMetaSource" class="com.liqihua.shiro.service.ChainDefinitionSectionMetaSource">
+    	<property name="filterChainDefinitions">
+    		<value>
+    			/images/**=anon 
+            	/HomeController/login**=anon
+            	/** = authc
+    		</value>
+    	</property>
+    </bean>
     
     <!-- 配置shiro的过滤器工厂类，id- shiroFilter要和我们在web.xml中配置的过滤器一致 -->  
     <bean id="shiroFilter" name="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">   
@@ -92,31 +102,7 @@
         <!-- 如果您请求的资源不再您的权限范围，则跳转到/403请求地址 -->  
         <property name="unauthorizedUrl" value="/403.jsp"/>    
         <!-- 权限配置 -->  
-        <property name="filterChainDefinitions">    
-            <value>
-            	<!-- anon表示此地址不需要任何权限即可访问 -->
-                /images/**=anon 
-            	/HomeController/login**=anon
-            	/HomeController/userList**=roles[admin]
-            	/HomeController/user.jsp=roles[admin]
-            	<!-- perms[add]表示访问此连接需要权限为add的用户 -->  
-                /add/**=perms[add]
-                <!-- perms[del]表示访问此连接需要权限为del的用户 -->  
-                /del/**=perms[del]
-                <!-- perms[update]表示访问此连接需要权限为update的用户 -->  
-                /update/**=perms[update]
-                <!-- perms[query]表示访问此连接需要权限为query的用户 -->  
-                /query/**=perms[query]
-                
-                 
-                <!-- roles[manager]表示访问此连接需要用户的角色为manager -->  
-                <!-- /user/add=roles[manager]  
-                /user/del/**=roles[admin]  
-                /user/edit/**=roles[manager]  --> 
-                <!--所有的请求(除去配置的静态资源请求或请求地址为anon的请求)都要通过登录验证,如果未登录则跳到/login-->    
-                /** = authc
-            </value>    
-        </property>    
+        <property name="filterChainDefinitionMap" ref="chainDefinitionSectionMetaSource"/> 
     </bean>
 	
 	<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />    

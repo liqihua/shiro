@@ -46,4 +46,9 @@ public class UserDao {
 		return list;
 	}
 	
+	public List<Permission> findAllPermission(){
+		String hql = " from Permission";
+		return getSession().createQuery(hql).list();
+	}
+	
 }

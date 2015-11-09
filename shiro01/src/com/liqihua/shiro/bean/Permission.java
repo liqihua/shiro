@@ -13,6 +13,7 @@ import javax.persistence.Table;
 public class Permission {
 	private Integer id;
 	private String permissionname;
+	private String url;
 	private Role role;
 	
 	@Id
@@ -30,6 +31,13 @@ public class Permission {
 	}
 	public void setPermissionname(String permissionname) {
 		this.permissionname = permissionname;
+	}
+	@Column(name="url")
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	@ManyToOne
 	@JoinColumn(name="role_id")

@@ -34,5 +34,9 @@ public class UserService {
 		return userDao.findPermissionByRid(roleId);
 	}
 	
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	public List<Permission> findAllPermission(){
+		return userDao.findAllPermission();
+	}
 	
 }
